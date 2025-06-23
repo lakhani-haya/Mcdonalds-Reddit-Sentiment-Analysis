@@ -1,4 +1,5 @@
 import praw
+import pandas as pd
 
 
 reddit = praw.Reddit(
@@ -7,7 +8,19 @@ reddit = praw.Reddit(
     user_agent="McDonaldsSentimentApp"
 )
 
-# Filtering only Mcdonald's posts 
-for submission in reddit.subreddit("fastfood").hot(limit=50):
+
+
+data = []
+
+for submission in reddit.subreddit("fastfood").hot(limit=100):
     if "mcdonald" in submission.title.lower():
-        print(submission.title)
+        data.append({
+            "title": submission.title,
+            "score": submission.score,
+            "url": submission.url,
+            "created": submission.created_utc
+        })
+
+df = pd.DataFrame(data)
+df.to_csv("mcdonalds_posts.csv", index=False)
+print("Saved to mcdonalds_posts.csv")
