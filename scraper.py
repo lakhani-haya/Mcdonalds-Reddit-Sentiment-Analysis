@@ -7,5 +7,7 @@ reddit = praw.Reddit(
     user_agent="McDonaldsSentimentApp"
 )
 
-for submission in reddit.subreddit("fastfood").hot(limit=5):
-    print(submission.title)
+# Filtering only Mcdonald's posts 
+for submission in reddit.subreddit("fastfood").hot(limit=50):
+    if "mcdonald" in submission.title.lower():
+        print(submission.title)
